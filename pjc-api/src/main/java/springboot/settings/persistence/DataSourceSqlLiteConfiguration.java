@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 		)
 public class DataSourceSqlLiteConfiguration {
 	
+	  @Value("${sqllite.datasource.url}")
+	  String urlbanco;
+	  
 	protected Map<String, Object> sqlLiteProperties() {
 	    HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.dialect", "springboot.settings.dialect.SQLiteDialect");
@@ -45,7 +49,7 @@ public class DataSourceSqlLiteConfiguration {
 	public DataSource sqlLiteDataSource() {
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.sqlite.JDBC");
-        dataSourceBuilder.url("jdbc:sqlite:A:/pjc.db");
+        dataSourceBuilder.url(urlbanco);
         return dataSourceBuilder.build();
 	}
 	

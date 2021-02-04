@@ -27,7 +27,16 @@ public class Album  {
 		@ManyToOne
 		@JoinColumn(name = "artista_id")
 		private Artista artista;
-				
+		
+		public Album() {
+			
+		}
+		
+		public Album(Integer id) {
+			this.id = id;
+		}
+			
+		
 		public Integer getId() {
 			return id;
 		}

@@ -79,6 +79,7 @@ public class CrossOriginFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		getEndpointsDesprotegidos().add( "/api/autenticacao/autenticar" );
+		getEndpointsDesprotegidos().add( "/api/album/*" );
 	}
 	
 	@Override

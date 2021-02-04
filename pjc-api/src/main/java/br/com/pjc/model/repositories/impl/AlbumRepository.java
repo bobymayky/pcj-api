@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.pjc.model.dao.JdbcQuery;
 import br.com.pjc.model.dao.SqlLiteJpaDao;
 import br.com.pjc.model.entities.Album;
+import br.com.pjc.model.entities.AlbumImagem;
 import br.com.pjc.model.entities.Artista;
 import br.com.pjc.model.repositories.IAlbumRepository;
 import br.com.pjc.persistences.exceptions.PersistenceException;
@@ -84,6 +85,66 @@ public class AlbumRepository implements IAlbumRepository{
 		}
 		return retorno;
 	}
+	
+	
+	@Override
+	public List<AlbumImagem> listarImageAlbumPorAlbum( Album album) {
+		String queryString = "	SELECT "
+						   + "         ai.album_imagem_id, "
+						   + "         a.album_id, "
+						   + "         a.album_nome, "
+						   + "         ai.album_imagem_url_foto "
+						   + "  FROM "
+						   + "       tb_album_imagem ai "
+						   + "  INNER JOIN tb_album a on a.album_id = ai.album_id "
+						   + "  WHERE "
+						   + "        a.album_id = :albumId "
+					       + "  ORDER BY album_imagem_id ASC ";
+		JdbcQuery query = new JdbcQuery(queryString);
+		query.getParameters().put("albumId", album.getId());
+		List<Object[]> resultado = (List<Object[]>) getDao().getResultList(query);
+		List<AlbumImagem> retorno = new ArrayList<AlbumImagem>();
+		for(Object registro[] : resultado) {
+			AlbumImagem albumImage = new AlbumImagem();
+			albumImage.setId(CastClassUtil.toInteger(registro[0]));
+			albumImage.setAlbum(new Album(CastClassUtil.toInteger(registro[1])));
+			albumImage.getAlbum().setNome(CastClassUtil.toString(registro[2]));
+			albumImage.setUrlFoto(CastClassUtil.toString(registro[3]));
+			retorno.add(albumImage);
+		}
+		return retorno;
+	}
+	
+	
+	
+	@Override
+	public AlbumImagem buscarImageAlbumPorId( Integer id) {
+		String queryString = "	SELECT "
+						   + "         ai.album_imagem_id, "
+						   + "         a.album_id, "
+						   + "         a.album_nome, "
+						   + "         ai.album_imagem_url_foto "
+						   + "  FROM "
+						   + "       tb_album_imagem ai "
+						   + "  INNER JOIN tb_album a on a.album_id = ai.album_id "
+						   + "  WHERE "
+						   + "        ai.album_imagem_id = :albumImageId "
+					       + "  ORDER BY album_imagem_id ASC ";
+		JdbcQuery query = new JdbcQuery(queryString);
+		query.getParameters().put("albumImageId", id);
+		List<Object[]> resultado = (List<Object[]>) getDao().getResultList(query);
+		AlbumImagem albumImagem = new AlbumImagem();
+		for(Object registro[] : resultado) {
+			albumImagem.setId(CastClassUtil.toInteger(registro[0]));
+			albumImagem.setAlbum(new Album(CastClassUtil.toInteger(registro[1])));
+			albumImagem.getAlbum().setNome(CastClassUtil.toString(registro[2]));
+			albumImagem.setUrlFoto(CastClassUtil.toString(registro[3]));
+		}
+		return albumImagem;
+	}
+	
+	
+	
 
 
 	@Override

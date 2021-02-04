@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.pjc.controllers.services.exceptions.ServiceException;
 import br.com.pjc.model.entities.Album;
+import br.com.pjc.model.entities.AlbumImagem;
 import br.com.pjc.model.entities.Artista;
 import br.com.pjc.model.repositories.IAlbumRepository;
 import br.com.pjc.persistences.exceptions.PersistenceException;
@@ -61,6 +62,16 @@ public class AlbumService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public List<AlbumImagem> listarImageAlbumPorAlbum(Album album)throws ServiceException {
+		return getAlbumRepository().listarImageAlbumPorAlbum(album);
+	}
+	
+	
+	public AlbumImagem buscarImageAlbumPorId(Integer id) {
+		return getAlbumRepository().buscarImageAlbumPorId(id);
 	}
 
 }
