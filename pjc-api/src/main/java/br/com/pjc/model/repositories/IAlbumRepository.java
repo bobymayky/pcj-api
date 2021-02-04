@@ -27,6 +27,8 @@ public interface IAlbumRepository {
 
 	public AlbumImagem buscarImageAlbumPorId(Integer id);
 
+	public boolean existeUrlCadastro(Album album, String urlImagem) throws PersistenceException;
+
 
 
 }

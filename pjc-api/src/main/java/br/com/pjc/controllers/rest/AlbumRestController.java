@@ -96,7 +96,9 @@ public class AlbumRestController {
 			for(MultipartFile multiPartFile : files ){
 				String urlImagem = album.getNome()+"/"+multiPartFile.getOriginalFilename();
 				getMinioAdapter().uploadImagem(urlImagem, multiPartFile.getContentType(), multiPartFile.getBytes());
-				getAlbumService().incluirImagemAlbum(album, urlImagem);
+				if(!getAlbumService().existeUrlCadastro(album, urlImagem)) {
+					getAlbumService().incluirImagemAlbum(album, urlImagem);
+				}
 			}
 		} catch (ServiceException e) {
 			

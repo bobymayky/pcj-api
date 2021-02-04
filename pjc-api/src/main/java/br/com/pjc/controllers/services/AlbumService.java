@@ -66,6 +66,15 @@ public class AlbumService {
 	}
 	
 	
+	public boolean existeUrlCadastro(Album album, String urlImagem) throws ServiceException {
+		try {
+			return getAlbumRepository().existeUrlCadastro(album, urlImagem);
+		} catch (PersistenceException e) {
+			return false;
+		}
+	}
+	
+	
 	public List<AlbumImagem> listarImageAlbumPorAlbum(Album album)throws ServiceException {
 		return getAlbumRepository().listarImageAlbumPorAlbum(album);
 	}

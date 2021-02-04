@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.google.common.io.ByteStreams;
+
+import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.messages.Bucket;
@@ -39,10 +42,14 @@ public class MinioAdapter {
     }
     
     
-    public void uploadImagem(String diretorioImagem, String contentType, byte[] content) {
+	public void uploadImagem(String diretorioImagem, String contentType, byte[] content) {
         try {
         	InputStream imageStream = new ByteArrayInputStream(content);
-        	getMinioClient().putObject(    PutObjectArgs.builder().bucket(getDefaultBucketName() ).object(diretorioImagem).stream(
+        	 boolean existeBucket =  getMinioClient().bucketExists(BucketExistsArgs.builder().bucket(defaultBucketName).build());
+        	 if (!existeBucket) {
+        		 getMinioClient().makeBucket(MakeBucketArgs.builder().bucket(defaultBucketName).build());
+         	 } 
+           	getMinioClient().putObject(    PutObjectArgs.builder().bucket(getDefaultBucketName() ).object(diretorioImagem).stream(
 			            	    	  imageStream, -1, 10485760)
 			            	          .contentType(contentType)
 			            	          .build());

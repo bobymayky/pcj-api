@@ -228,6 +228,28 @@ public class AlbumRepository implements IAlbumRepository{
 	}
 	
 	
+	@Override
+	public boolean existeUrlCadastro( Album album, String urlImagem ) throws PersistenceException {
+		String queryString = " SELECT "
+						   + "       album_imagem_id, "
+						   + "       album_id,"
+						   + "       album_imagem_url_foto"
+						   + "  FROM "
+						   + "       tb_album_imagem"
+						   + " WHERE album_id = :albumId "
+						   + " AND album_imagem_url_foto = :url";
+				        JdbcQuery query = new JdbcQuery(queryString);
+				        query.getParameters().put("albumId", album.getId());
+				   		query.getParameters().put("url", urlImagem);
+				   		Object[] resultado = getDao().getSingleResult(query);
+				   		if(!ValidationUtil.isEmpty(resultado)) {
+				   			return true;
+				   		} else {
+				   			return false;
+				   		}
+	}
+	
+	
 	
 
 	
