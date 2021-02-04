@@ -25,6 +25,7 @@ import br.com.pjc.model.entities.Album;
 import br.com.pjc.model.entities.AlbumImagem;
 import br.com.pjc.model.entities.Artista;
 import io.swagger.annotations.ApiOperation;
+import util.Pageset;
 import util.ValidationUtil;
 
 @RestController
@@ -59,10 +60,20 @@ public class AlbumRestController {
 				}
 	}
 	
+	@ApiOperation("Buscar Album.")
+	@RequestMapping(value="/buscar",method = RequestMethod.GET)
+	public @ResponseBody Album buscarAlbum( @RequestParam(value="id") Integer id ) {
+				try {
+					return getAlbumService().buscarAlbumPorId(id);
+				} catch (ServiceException e) {
+					return null;
+				}
+	}
+	
 	
 	@ApiOperation("Listar albuns.")
 	@RequestMapping(path = "/listar", method = RequestMethod.GET)
-	public @ResponseBody List<Album> listarAlbum(
+	public @ResponseBody Pageset<Album> listarAlbum(
 			                            @RequestParam(value="nome") String nome,
 			                            @RequestParam(value="quantidade") Integer quantidade,
 			                            @RequestParam(value="pagina") Integer pagina) {

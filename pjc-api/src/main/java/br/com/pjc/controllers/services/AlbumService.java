@@ -11,6 +11,7 @@ import br.com.pjc.model.entities.AlbumImagem;
 import br.com.pjc.model.entities.Artista;
 import br.com.pjc.model.repositories.IAlbumRepository;
 import br.com.pjc.persistences.exceptions.PersistenceException;
+import util.Pageset;
 
 @Service
 public class AlbumService {
@@ -40,7 +41,7 @@ public class AlbumService {
 	}
 	
 	
-	public List<Album> listarAlbuns(String nome, Integer quantidade, Integer pagina) throws ServiceException{
+	public Pageset<Album> listarAlbuns(String nome, Integer quantidade, Integer pagina) throws ServiceException{
 		return getAlbumRepository().listarAlbuns(nome, quantidade,  pagina);
 	}
 	

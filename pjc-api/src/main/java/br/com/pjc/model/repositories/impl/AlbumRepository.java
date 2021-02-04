@@ -15,6 +15,7 @@ import br.com.pjc.model.entities.Artista;
 import br.com.pjc.model.repositories.IAlbumRepository;
 import br.com.pjc.persistences.exceptions.PersistenceException;
 import util.CastClassUtil;
+import util.Pageset;
 import util.ValidationUtil;
 
 
@@ -60,12 +61,19 @@ public class AlbumRepository implements IAlbumRepository{
 	
 	
 	@Override
-	public List<Album> listarAlbuns( String nome, Integer quantidade, Integer pagina) {
+	public Pageset<Album> listarAlbuns( String nome, Integer quantidade, Integer pagina) {
 		String queryString = "	SELECT "
 						   + "        ab.album_id, "
 				           + "        ab.album_nome, "
 				           + "        ar.artista_id, "
-				           + "        ar.artista_nome "
+				           + "        ar.artista_nome,"
+				           + "       ( SELECT "
+				           + "               count(1) "
+				           + "          FROM "
+				           + "           tb_album ab "
+				           + "           INNER JOIN tb_artista ar on ar.artista_id = ab.artista_id"
+				           +(!ValidationUtil.isEmpty(nome) ?  "  WHERE ar.artista_nome like  '%"+nome+"%' OR  ab.album_nome like  '%"+nome+"%'" : "" ) 			           
+				           + "       ) as quantidade "
 				           + "  FROM "
 				           + "       tb_album ab "
 				           + "  INNER JOIN tb_artista ar on ar.artista_id = ab.artista_id "
@@ -75,15 +83,19 @@ public class AlbumRepository implements IAlbumRepository{
 		JdbcQuery query = new JdbcQuery(queryString);
 		List<Object[]> resultado = (List<Object[]>) getDao().getResultList(query);
 		List<Album> retorno = new ArrayList<Album>();
+		Integer pages =   0;
 		for(Object registro[] : resultado) {
 			Album album = new Album();
 			album.setId(CastClassUtil.toInteger(registro[0]));
 			album.setNome(CastClassUtil.toString(registro[1]));
 			album.setArtista(new Artista(CastClassUtil.toInteger(registro[2])));
 			album.getArtista().setNome(CastClassUtil.toString(registro[3]));
+			pages =  CastClassUtil.toInteger(registro[4]);
 			retorno.add(album);
 		}
-		return retorno;
+		pages = pages/quantidade;
+		pages = pages+1;
+		return new Pageset<Album>(retorno, 0, pages, pagina);
 	}
 	
 	
@@ -178,12 +190,15 @@ public class AlbumRepository implements IAlbumRepository{
 	@Override
 	public Album buscarAlbumPorId(Integer id) {
 		String queryString = "	SELECT "
-						   + " 		  album_id, "
-				  		   + "        album_nome "
-				  		   + "  FROM "
-				  		   + "       tb_album "
+						   + "         al.album_id, "
+						   + "         al.album_nome, "
+						   + "         ar.artista_id, "
+						   + "         ar.artista_nome "
+						   + "  FROM "
+						   + "       tb_album al "
+						   + "  INNER JOIN tb_artista ar on al.artista_id = ar.artista_id "
 				  		   + "  WHERE "
-				  		   + "       album_id = :id ";
+				  		   + "       al.album_id = :id ";
 			JdbcQuery query = new JdbcQuery(queryString);
 			query.getParameters().put("id", id);
 			Object[] resultado = getDao().getSingleResult(query);
@@ -191,6 +206,8 @@ public class AlbumRepository implements IAlbumRepository{
 			if(!ValidationUtil.isEmpty(resultado)) {
 				album.setId(CastClassUtil.toInteger(resultado[0]));
 				album.setNome(CastClassUtil.toString(resultado[1]));
+				album.setArtista(new Artista(CastClassUtil.toInteger(resultado[2])));
+				album.getArtista().setNome(CastClassUtil.toString(resultado[3]));
 			}
 			return album;
 	}
