@@ -87,6 +87,23 @@ public class AlbumRestController {
 	
 	
 	
+	@ApiOperation("Listar albuns.")
+	@RequestMapping(path = "/app/listar", method = RequestMethod.GET)
+	public @ResponseBody List<Album> listarAlbumApp(
+			                            @RequestParam(value="nome") String nome,
+			                            @RequestParam(value="quantidade") Integer quantidade,
+			                            @RequestParam(value="pagina") Integer pagina) {
+			try {
+				Pageset<Album> resultSet = getAlbumService().listarAlbuns(nome, quantidade, pagina);
+				return resultSet.getResult();
+			} catch (ServiceException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+	
+	
+	
 	@PostMapping(path = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public void uploadImagemAlbum(
 			@RequestParam(value="albumId") Integer albumId,
