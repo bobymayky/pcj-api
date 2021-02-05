@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "a25b831f-b24f-4a52-a567-20dbe68e0b36",
+		"name": "PJC API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Editar Artista",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Leandro e Leonardo"
+				},
+				"url": {
+					"raw": "localhost:8081/api/artista/atualizar/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"artista",
+						"atualizar",
+						"8"
+					]
+				},
+				"description": "Incluir Artista"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Albums",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8081/api/album/listar?nome=le&quantidade=5&pagina=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"album",
+						"listar"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "le"
+						},
+						{
+							"key": "quantidade",
+							"value": "5"
+						},
+						{
+							"key": "pagina",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Listar Albums"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Artista",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8081/api/artista/listar/le",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"artista",
+						"listar",
+						"le"
+					]
+				},
+				"description": "Listar Albums"
+			},
+			"response": []
+		},
+		{
+			"name": "Incluir Artista",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Leonardo"
+				},
+				"url": {
+					"raw": "localhost:8081/api/artista/incluir",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"artista",
+						"incluir"
+					]
+				},
+				"description": "Incluir Artista"
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = JSON.parse(responseBody);\r",
+							"postman.clearGlobalVariable(\"access_token\");\r",
+							"postman.setGlobalVariable(\"access_token\", data.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8081/api/autenticacao/autenticar?grant_type=password&username=admin&password=21232f297a57a5a743894a0e4a801fc3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"autenticacao",
+						"autenticar"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "21232f297a57a5a743894a0e4a801fc3"
+						}
+					]
+				},
+				"description": "10.10.11.42:8089/api/autenticacao/autenticar?grant_type=password&username=admin&password=9b4a6e389b35a3969db7b8a5ad167af5"
+			},
+			"response": []
+		},
+		{
+			"name": "Incluir Album",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "boby"
+				},
+				"url": {
+					"raw": "localhost:8081/api/album/incluir?artistaId=8&nome=É por você que Canto",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"album",
+						"incluir"
+					],
+					"query": [
+						{
+							"key": "artistaId",
+							"value": "8"
+						},
+						{
+							"key": "nome",
+							"value": "É por você que Canto"
+						}
+					]
+				},
+				"description": "Incluir Artista"
+			},
+			"response": []
+		},
+		{
+			"name": "Visualizar imagem album",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8081/api/album/visualizar/image?id=30",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"album",
+						"visualizar",
+						"image"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload Imagem Album",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imagens",
+							"type": "file",
+							"src": "/C:/Users/Boby Mayky/Pictures/image pjc/GreatestHits.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8081/api/album/upload?albumId=18",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"album",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "18"
+						}
+					]
+				},
+				"description": "Incluir Artista"
+			},
+			"response": []
+		},
+		{
+			"name": "Visualizar capa Album",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/album/visualizar/capa?albumId=18",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"album",
+						"visualizar",
+						"capa"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "18"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
